@@ -30,6 +30,20 @@ TEST(JumperTest, TestCatarinaModified) {
 }
 /*
  * 3 6
+ * 2 4 5
+ * 1 2
+ */
+TEST(JumperTest, TestBoard) {
+    int path[100000] = {1,2,4,5,6};
+    Jumper j(path,6,2,1,3);
+    try {
+        ASSERT_EQ(j.jump(), 3);
+    }catch (std::exception &e) {
+        FAIL() << "Test throws unexpected exception";
+    }
+}
+/*
+ * 3 6
  * 3 4 5
  * 1 3
  */

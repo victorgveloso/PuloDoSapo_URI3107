@@ -5,27 +5,18 @@
 #include "jumper.h"
 
 
-int Jumper::dist(int a, int b) {
-    if(a < b) {
-        return path[b] - path[a];
-    }
-    return path[a] - path[b];
-}
-
 bool Jumper::podePulo(int &newPos, int jSize) {
-    int pos = newPos;
-    while (dist(pos,newPos) <= jSize && newPos <= lastStone) {
-        newPos++;
-    }
-    if (newPos <= lastStone) {
-        newPos--;
-    }//TODO: return false if jump is bigger than the margin distance
-    return newPos != pos;
+    int pos = newPos++;
+    while (path[newPos] - path[pos] < jSize && newPos <= (lastStone + 1)) { ++newPos; }
+    return path[newPos] - path[pos] == jSize; //otherwise it's bigger than jSize
 }
 
 bool Jumper::podePuloGrande(int &newPos) {
+    int pos;
     for (int i = bJ; i > sJ; --i) {
-        if (podePulo(newPos, i)) {
+        pos = newPos;
+        if (podePulo(pos, i)) {
+            newPos = pos;
             return true;
         }
     }
@@ -33,8 +24,11 @@ bool Jumper::podePuloGrande(int &newPos) {
 }
 
 bool Jumper::podePuloPequeno(int &newPos) {
+    int pos;
     for (int i = sJ; i > 0; --i) {
-        if (podePulo(newPos, i)) {
+        pos = newPos;
+        if (podePulo(pos, i)) {
+            newPos = pos;
             return true;
         }
     }
@@ -43,12 +37,12 @@ bool Jumper::podePuloPequeno(int &newPos) {
 
 int Jumper::jump(unsigned char g, int pos) {
     if (path[pos] == END) {
-        return 1;
+        return 0;
     }
     try {
         int newPos = pos;
         if (g > 0 && podePuloGrande(newPos)) {
-            return jump(g-1, newPos) + 1;
+            return jump(g - 1, newPos) + 1;
         }
     }
     catch (std::exception &e) {}

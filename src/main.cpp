@@ -1,5 +1,6 @@
 #include "jumper.h"
 int main() {
+    std::ostream::sync_with_stdio(false);
     Jumper j;
     std::cin >> j.lastStone >> j.END;
     j.path[0] = 1;

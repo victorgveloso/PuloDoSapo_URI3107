@@ -23,8 +23,6 @@ public:
             int sJ,
             int lastStone):path(path),END(END),bJ(bJ),sJ(sJ),lastStone(lastStone){}
 
-    int dist(int a, int b);
-
     bool podePulo(int &newPos, int jSize);
 
     bool podePuloGrande(int &newPos);
