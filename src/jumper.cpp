@@ -35,21 +35,21 @@ bool Jumper::podePuloPequeno(int &newPos) {
     return false;
 }
 
-int Jumper::jump(unsigned char g, int pos) {
+int Jumper::jump(bool g, int pos) {
     if (path[pos] == END) {
         return 0;
     }
     try {
         int newPos = pos;
-        if (g > 0 && podePuloGrande(newPos)) {
-            return jump(g - 1, newPos) + 1;
+        if (g && podePuloGrande(newPos)) {
+            return jump(false, newPos) + 1;
         }
     }
     catch (std::exception &e) {}
     try {
         int newPos = pos;
         if (podePuloPequeno(newPos)) {
-            return jump(g, newPos) + 1;
+            return jump(true, newPos) + 1;
         }
     }
     catch (std::exception &e) {}

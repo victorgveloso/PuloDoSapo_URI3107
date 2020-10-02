@@ -15,7 +15,7 @@ public:
     int sJ = 1;
     int lastStone;
 
-    Jumper():path(new int[10000]){}
+    Jumper():path(new int[2000000]){}
 
     Jumper( int *path,
             int END,
@@ -29,8 +29,8 @@ public:
 
     bool podePuloPequeno(int &newPos);
 
-    int jump(){return jump(2,0);}
-    int jump(unsigned char g, int pos);
+    int jump(){return jump(true,0);}
+    int jump(bool g, int pos);
 };
 
 
