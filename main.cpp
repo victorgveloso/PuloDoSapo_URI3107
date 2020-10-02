@@ -18,7 +18,7 @@ int main() {
     for (int i = 0; i < locStone; ++i) {
         int pedra;
         std::cin >> pedra;
-        pedras.insert(pedra);    
+        pedras.insert(pedra);
     }
     std::cin >> sJump >> bJump;
     int nPulos = 0;
