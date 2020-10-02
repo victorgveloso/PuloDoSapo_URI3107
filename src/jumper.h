@@ -1,0 +1,39 @@
+//
+// Created by victor on 02/10/2020.
+//
+
+#ifndef PULODOSAPO_URI3107_JUMPER_H
+#define PULODOSAPO_URI3107_JUMPER_H
+
+#include <bits/stdc++.h>
+
+class Jumper {
+public:
+    int *path;
+    int END = 1;
+    int bJ = 2;
+    int sJ = 1;
+    int lastStone;
+
+    Jumper():path(new int[10000]){}
+
+    Jumper( int *path,
+            int END,
+            int bJ,
+            int sJ,
+            int lastStone):path(path),END(END),bJ(bJ),sJ(sJ),lastStone(lastStone){}
+
+    int dist(int a, int b);
+
+    bool podePulo(int &newPos, int jSize);
+
+    bool podePuloGrande(int &newPos);
+
+    bool podePuloPequeno(int &newPos);
+
+    int jump(){return jump(2,0);}
+    int jump(unsigned char g, int pos);
+};
+
+
+#endif //PULODOSAPO_URI3107_JUMPER_H
