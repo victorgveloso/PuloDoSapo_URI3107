@@ -30,8 +30,8 @@ TEST(JumperTest, TestCatarinaFixed) {
  * 2 4
  */
 TEST(JumperTest, TestCatarinaSpooky) {
-    int path[100000] = {1,2,3,6,7,11,12,14,15};
-    Jumper j(path, 4, 2, 8);
+    int path[100000] = {1,2,3,6,7,11,12};
+    Jumper j(path, 4, 2, 5);
     ASSERT_EQ(j.jump(), 5);
 }
 /*
@@ -113,7 +113,6 @@ TEST(JumperTest, TestCompleteFullPath) {
     testFromFile("../../inputSuccess.txt",500001);
 }
 
-/*
 TEST(JumperTest, TestTooFarMargin) {
     testFromFile("../../inputTooFarMargin.txt",-1);
-}*/
+}

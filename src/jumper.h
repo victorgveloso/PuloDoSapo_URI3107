@@ -17,7 +17,7 @@ private:
 
     bool podePulo(int &newPos, int jSize);
 
-    JumpType maiorPuloPossivel(int i, int &newPos, int &jumpSize);
+    JumpType maiorPuloPossivel(int pos, int &newPos, int jumpSize);
 public:
 
     Jumper(int *path, int bJ, int sJ, int lastStone) : path(path), bJ(bJ), sJ(sJ), lastStone(lastStone) {

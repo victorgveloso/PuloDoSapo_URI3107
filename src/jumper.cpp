@@ -10,10 +10,7 @@ int Jumper::jump()  {
         for (int i = lastStone; i >= 0; --i) {
             for (int gi = 0; gi <= 1; ++gi) {
                 int g = gi;
-                int newPos, jumpSize = sJ;
-                if (g) {
-                    jumpSize = bJ;
-                }
+                int newPos = i, jumpSize = g? bJ : sJ;
                 switch (maiorPuloPossivel(i, newPos, jumpSize)) {
                     case BIG:
                         jumps[g][i] = jumps[0][newPos] + 1;
@@ -36,21 +33,36 @@ int Jumper::jump()  {
 
 bool Jumper::podePulo(int &newPos, int jSize) {
     int pos = newPos++;
-    while (newPos <= (lastStone + 1) && path[newPos] - path[pos] < jSize) { ++newPos; }
+    while (newPos < (lastStone + 1) && path[newPos] - path[pos] < jSize) { ++newPos; }
     return path[newPos] - path[pos] == jSize; //otherwise it's bigger than jSize
 }
-JumpType Jumper::maiorPuloPossivel(int i, int &newPos, int &jumpSize) {
-    for (; jumpSize > sJ; --jumpSize) {
-        newPos = i;
-        if(podePulo(newPos, jumpSize) && jumps[0][newPos] != -1) {
+JumpType Jumper::maiorPuloPossivel(int pos, int &newPos, int jumpSize) {
+    if(podePulo(newPos, jumpSize) && jumps[0][newPos] != -1) {
+        if (jumpSize > sJ) {
             return BIG;
         }
-    }
-    for (; jumpSize > 0; --jumpSize) {
-        newPos = i;
-        if(podePulo(newPos, jumpSize) && jumps[1][newPos] != -1) {
+        else {
             return SMALL;
         }
     }
-    return ERR;
+    else {
+        if (newPos != lastStone + 1) {
+            newPos--;
+        }
+        if (newPos == pos) {
+            return ERR;
+        }
+        else if (path[newPos] - path[pos] > sJ) {
+            if (jumps[0][newPos] == -1) {
+                return ERR;
+            }
+            return BIG;
+        }
+        else {
+            if (jumps[1][newPos] == -1) {
+                return ERR;
+            }
+            return SMALL;
+        }
+    }
 }
