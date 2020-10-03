@@ -94,3 +94,43 @@ TEST(JumperTest, MyBigSparseTest) {
         FAIL() << "Test throws unexpected exception";
     }
 }
+
+TEST(JumperTest, TestFullPathWithBigDistance) {
+    std::ifstream inFile;
+    inFile.open("../../input.txt");
+    ASSERT_TRUE(inFile);
+    Jumper j;
+    inFile >> j.lastStone >> j.END;
+    j.path[0] = 1;
+    j.path[j.lastStone + 1] = j.END;
+    for (int stone = 1; stone <= j.lastStone; ++stone) {
+        int dist;
+        inFile >> dist;
+        j.path[stone] = dist;
+    }
+    inFile >> j.sJ >> j.bJ;
+
+    ASSERT_THROW(j.jump(),std::exception);
+}
+
+TEST(JumperTest, TestCompleteFullPath) {
+    std::ifstream inFile;
+    inFile.open("../../inputSuccess.txt");
+    ASSERT_TRUE(inFile);
+    Jumper j;
+    inFile >> j.lastStone >> j.END;
+    j.path[0] = 1;
+    j.path[j.lastStone + 1] = j.END;
+    for (int stone = 1; stone <= j.lastStone; ++stone) {
+        int dist;
+        inFile >> dist;
+        j.path[stone] = dist;
+    }
+    inFile >> j.sJ >> j.bJ;
+
+    try {
+        ASSERT_EQ(j.jump(), 209300500001);
+    }catch (std::exception &e) {
+        FAIL() << "Test throws unexpectedly";
+    }
+}
