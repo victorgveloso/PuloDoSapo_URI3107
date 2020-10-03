@@ -6,43 +6,27 @@
 #define PULODOSAPO_URI3107_JUMPER_H
 
 #include <bits/stdc++.h>
-
+enum JumpType {BIG, SMALL, ERR};
 class Jumper {
 public:
     int *path;
-    int END = 1;
     int bJ = 2;
     int sJ = 1;
     int lastStone;
     int *jumps[2] = {new int[1000002], new int[1000002]};
 
-    Jumper() : path(new int[1000002]()) {
-        for (int i = 0; i < 1000002; ++i) {
-            jumps[0][i] = -1;
-            jumps[1][i] = -1;
-        }
-    }
-
-    Jumper(int *path,
-           int END,
-           int bJ,
-           int sJ,
-           int lastStone) : path(path), END(END), bJ(bJ), sJ(sJ), lastStone(lastStone) {
-        for (int i = 0; i < 1000002; ++i) {
-            jumps[0][i] = -1;
-            jumps[1][i] = -1;
-        }
+    Jumper(int *path, int bJ, int sJ, int lastStone) : path(path), bJ(bJ), sJ(sJ), lastStone(lastStone) {
+        jumps[0][lastStone + 1] = 0;
+        jumps[1][lastStone + 1] = 0;
+        jumps[0][0] = -2;
+        jumps[1][0] = -2;
     }
 
     bool podePulo(int &newPos, int jSize);
 
-    bool podePuloGrande(int &newPos);
+    int jump();
 
-    bool podePuloPequeno(int &newPos);
-
-    int jump() { return jump(true, 0); }
-
-    int jump(bool g, int pos);
+    JumpType maiorPuloPossivel(int i, int &newPos, int &jumpSize);
 };
 
 

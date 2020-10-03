@@ -1,21 +1,18 @@
 #include "jumper.h"
 int main() {
     std::ostream::sync_with_stdio(false);
-    Jumper j;
-    std::cin >> j.lastStone >> j.END;
-    j.path[0] = 1;
-    j.path[j.lastStone + 1] = j.END;
-    for (int stone = 1; stone <= j.lastStone; ++stone) {
+    int lastStone, END, sJ, bJ;
+    int *path = {new int[1000002]};
+    std::cin >> lastStone >> END;
+    path[0] = 1;
+    path[lastStone + 1] = END;
+    for (int stone = 1; stone <= lastStone; ++stone) {
         int dist;
         std::cin >> dist;
-        j.path[stone] = dist;
+        path[stone] = dist;
     }
-    std::cin >> j.sJ >> j.bJ;
-    try {
-        std::cout << j.jump() << std::endl;
-    }
-    catch (std::exception &e) {
-        std::cout << -1 << std::endl;
-    }
+    std::cin >> sJ >> bJ;
+    Jumper j(path, bJ, sJ, lastStone);
+    std::cout << j.jump() << std::endl;
     return 0;
 }

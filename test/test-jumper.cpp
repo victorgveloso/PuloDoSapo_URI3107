@@ -11,8 +11,8 @@
  */
 TEST(JumperTest, TestCatarina) {
     int path[100000] = {1,2,3,4,7,11,12,13,15,16};
-    Jumper j(path,16,4,2,8);
-    ASSERT_THROW(j.jump(),std::exception);
+    Jumper j(path, 4, 2, 8);
+    ASSERT_EQ(j.jump(),-1);
 }
 /*
  * 8 16
@@ -21,12 +21,8 @@ TEST(JumperTest, TestCatarina) {
  */
 TEST(JumperTest, TestCatarinaFixed) {
     int path[100000] = {1,2,3,4,7,8,12,13,15,16};
-    Jumper j(path,16,4,2,8);
-    try {
-        ASSERT_EQ(j.jump(), 6);
-    }catch (std::exception &e) {
-        FAIL() << "Test throws unexpected exception";
-    }
+    Jumper j(path, 4, 2, 8);
+    ASSERT_EQ(j.jump(), 6);
 }
 /*
  * 8 16
@@ -35,8 +31,8 @@ TEST(JumperTest, TestCatarinaFixed) {
  */
 TEST(JumperTest, TestCatarinaModified) {
     int path[100000] = {1,2,3,4,6,11,12,13,15,16};
-    Jumper j(path,16,4,2,8);
-    ASSERT_THROW(j.jump(),std::exception);
+    Jumper j(path, 4, 2, 8);
+    ASSERT_EQ(j.jump(),-1);
 }
 /*
  * 3 6
@@ -45,12 +41,8 @@ TEST(JumperTest, TestCatarinaModified) {
  */
 TEST(JumperTest, TestBoard) {
     int path[100000] = {1,2,4,5,6};
-    Jumper j(path,6,2,1,3);
-    try {
-        ASSERT_EQ(j.jump(), 4);
-    }catch (std::exception &e) {
-        FAIL() << "Test throws unexpected exception";
-    }
+    Jumper j(path, 2, 1, 3);
+    ASSERT_EQ(j.jump(), 4);
 }
 /*
  * 3 6
@@ -59,12 +51,8 @@ TEST(JumperTest, TestBoard) {
  */
 TEST(JumperTest, TestDemo) {
     int path[100000] = {1,3,4,5,6};
-    Jumper j(path,6,3,1,3);
-    try {
-        ASSERT_EQ(j.jump(), 3);
-    }catch (std::exception &e) {
-        FAIL() << "Test throws unexpected exception";
-    }
+    Jumper j(path, 3, 1, 3);
+    ASSERT_EQ(j.jump(), 3);
 }
 /*
  * 4 8
@@ -73,12 +61,8 @@ TEST(JumperTest, TestDemo) {
  */
 TEST(JumperTest, MySmallTest) {
     int path[100000] = {1,2,4,5,6,8};
-    Jumper j(path,8,3,1,4);
-    try {
-        ASSERT_EQ(j.jump(), 3);
-    }catch (std::exception &e) {
-        FAIL() << "Test throws unexpected exception";
-    }
+    Jumper j(path, 3, 1, 4);
+    ASSERT_EQ(j.jump(), 3);
 }
 /*
  * 3 10
@@ -87,50 +71,46 @@ TEST(JumperTest, MySmallTest) {
  */
 TEST(JumperTest, MyBigSparseTest) {
     int path[100000] = {1,4,6,7,10};
-    Jumper j(path,10,4,2,3);
-    try {
-        ASSERT_EQ(j.jump(), 3);
-    }catch (std::exception &e) {
-        FAIL() << "Test throws unexpected exception";
-    }
+    Jumper j(path, 4, 2, 3);
+    ASSERT_EQ(j.jump(), 3);
 }
 
 TEST(JumperTest, TestFullPathWithBigDistance) {
     std::ifstream inFile;
     inFile.open("../../input.txt");
     ASSERT_TRUE(inFile);
-    Jumper j;
-    inFile >> j.lastStone >> j.END;
-    j.path[0] = 1;
-    j.path[j.lastStone + 1] = j.END;
-    for (int stone = 1; stone <= j.lastStone; ++stone) {
+    int lastStone, END, sJ, bJ;
+    int *path = {new int[1000002]};
+    inFile >> lastStone >> END;
+    path[0] = 1;
+    path[lastStone + 1] = END;
+    for (int stone = 1; stone <= lastStone; ++stone) {
         int dist;
         inFile >> dist;
-        j.path[stone] = dist;
+        path[stone] = dist;
     }
-    inFile >> j.sJ >> j.bJ;
+    inFile >> sJ >> bJ;
+    Jumper j(path, bJ, sJ, lastStone);
 
-    ASSERT_THROW(j.jump(),std::exception);
+    ASSERT_EQ(j.jump(),-1);
 }
 
 TEST(JumperTest, TestCompleteFullPath) {
     std::ifstream inFile;
     inFile.open("../../inputSuccess.txt");
     ASSERT_TRUE(inFile);
-    Jumper j;
-    inFile >> j.lastStone >> j.END;
-    j.path[0] = 1;
-    j.path[j.lastStone + 1] = j.END;
-    for (int stone = 1; stone <= j.lastStone; ++stone) {
+    int lastStone, END, sJ, bJ;
+    int *path = {new int[1000002]};
+    inFile >> lastStone >> END;
+    path[0] = 1;
+    path[lastStone + 1] = END;
+    for (int stone = 1; stone <= lastStone; ++stone) {
         int dist;
         inFile >> dist;
-        j.path[stone] = dist;
+        path[stone] = dist;
     }
-    inFile >> j.sJ >> j.bJ;
+    inFile >> sJ >> bJ;
+    Jumper j(path, bJ, sJ, lastStone);
 
-    try {
-        ASSERT_EQ(j.jump(), 209300500001);
-    }catch (std::exception &e) {
-        FAIL() << "Test throws unexpectedly";
-    }
+    ASSERT_EQ(j.jump(), 500001);
 }
