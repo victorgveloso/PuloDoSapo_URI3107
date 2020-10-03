@@ -25,6 +25,16 @@ TEST(JumperTest, TestCatarinaFixed) {
     ASSERT_EQ(j.jump(), 6);
 }
 /*
+ * 7 15
+ * 2 3 6 7 11 12 14
+ * 2 4
+ */
+TEST(JumperTest, TestCatarinaSpooky) {
+    int path[100000] = {1,2,3,6,7,11,12,14,15};
+    Jumper j(path, 4, 2, 8);
+    ASSERT_EQ(j.jump(), 5);
+}
+/*
  * 8 16
  * 2 3 4 6 11 12 13 15
  * 2 4
@@ -75,9 +85,9 @@ TEST(JumperTest, MyBigSparseTest) {
     ASSERT_EQ(j.jump(), 3);
 }
 
-TEST(JumperTest, TestFullPathWithBigDistance) {
+void testFromFile(std::string fileName, int expectedOutput) {
     std::ifstream inFile;
-    inFile.open("../../input.txt");
+    inFile.open(fileName);
     ASSERT_TRUE(inFile);
     int lastStone, END, sJ, bJ;
     int *path = {new int[1000002]};
@@ -92,25 +102,18 @@ TEST(JumperTest, TestFullPathWithBigDistance) {
     inFile >> sJ >> bJ;
     Jumper j(path, bJ, sJ, lastStone);
 
-    ASSERT_EQ(j.jump(),-1);
+    ASSERT_EQ(j.jump(),expectedOutput);
+}
+
+TEST(JumperTest, TestFullPathWithBigDistance) {
+    testFromFile("../../input.txt",-1);
 }
 
 TEST(JumperTest, TestCompleteFullPath) {
-    std::ifstream inFile;
-    inFile.open("../../inputSuccess.txt");
-    ASSERT_TRUE(inFile);
-    int lastStone, END, sJ, bJ;
-    int *path = {new int[1000002]};
-    inFile >> lastStone >> END;
-    path[0] = 1;
-    path[lastStone + 1] = END;
-    for (int stone = 1; stone <= lastStone; ++stone) {
-        int dist;
-        inFile >> dist;
-        path[stone] = dist;
-    }
-    inFile >> sJ >> bJ;
-    Jumper j(path, bJ, sJ, lastStone);
-
-    ASSERT_EQ(j.jump(), 500001);
+    testFromFile("../../inputSuccess.txt",500001);
 }
+
+/*
+TEST(JumperTest, TestTooFarMargin) {
+    testFromFile("../../inputTooFarMargin.txt",-1);
+}*/
