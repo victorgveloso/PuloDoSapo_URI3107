@@ -30,7 +30,7 @@ TEST(JumperTest, TestCatarinaFixed) {
  * 2 4
  */
 TEST(JumperTest, TestCatarinaSpooky) {
-    int path[100000] = {1,2,3,6,7,11,12};
+    int path[100000] = {1,2,3,6,7,11,13};
     Jumper j(path, 4, 2, 5);
     ASSERT_EQ(j.jump(), 5);
 }
@@ -102,7 +102,8 @@ void testFromFile(std::string fileName, int expectedOutput) {
     inFile >> sJ >> bJ;
     Jumper j(path, bJ, sJ, lastStone);
 
-    ASSERT_EQ(j.jump(),expectedOutput);
+    int output = j.jump();
+    ASSERT_EQ(output, expectedOutput);
 }
 
 TEST(JumperTest, TestFullPathWithBigDistance) {
@@ -115,4 +116,8 @@ TEST(JumperTest, TestCompleteFullPath) {
 
 TEST(JumperTest, TestTooFarMargin) {
     testFromFile("../../inputTooFarMargin.txt",-1);
+}
+
+TEST(JumperTest, TestTooFarMarginWithStones) {
+    testFromFile("../../inputTooFarMarginWithStones.txt",-1);
 }

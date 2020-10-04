@@ -5,12 +5,12 @@
 #include "jumper.h"
 
 
-int Jumper::jump()  {
+int Jumper::jump() {
     if (jumps[1][0] == -2 || jumps[0][0] == -2) {
         for (int i = lastStone; i >= 0; --i) {
             for (int gi = 0; gi <= 1; ++gi) {
                 int g = gi;
-                int newPos = i, jumpSize = g? bJ : sJ;
+                int newPos = i, jumpSize = g ? bJ : sJ;
                 switch (maiorPuloPossivel(i, newPos, jumpSize)) {
                     case BIG:
                         jumps[g][i] = jumps[0][newPos] + 1;
@@ -32,37 +32,36 @@ int Jumper::jump()  {
 }
 
 bool Jumper::podePulo(int &newPos, int jSize) {
-    int pos = newPos++;
-    while (newPos < (lastStone + 1) && path[newPos] - path[pos] < jSize) { ++newPos; }
-    return path[newPos] - path[pos] == jSize; //otherwise it's bigger than jSize
+    int pos = newPos;
+    newPos = readCache(jSize, newPos);
+    nextPossibleJump(jSize, newPos, pos);
+    return path[newPos] - path[pos] == jSize;
 }
+
 JumpType Jumper::maiorPuloPossivel(int pos, int &newPos, int jumpSize) {
-    if(podePulo(newPos, jumpSize) && jumps[0][newPos] != -1) {
-        if (jumpSize > sJ) {
+    if (podePulo(newPos, jumpSize)) {
+        if (jumpSize > sJ && jumps[0][newPos] != -1) {
             return BIG;
-        }
-        else {
+        } else if (jumpSize <= sJ && jumps[1][newPos] != -1) {
             return SMALL;
         }
     }
-    else {
-        if (newPos != lastStone + 1) {
-            newPos--;
-        }
-        if (newPos == pos) {
+    bool condA = newPos < lastStone + 1;
+    bool condB = path[newPos] - path[pos] >= jumpSize;
+    if (condA || condB) {
+        newPos--;
+    }
+    if (newPos == pos) {
+        return ERR;
+    } else if (path[newPos] - path[pos] > sJ) {
+        if (jumps[0][newPos] == -1) {
             return ERR;
         }
-        else if (path[newPos] - path[pos] > sJ) {
-            if (jumps[0][newPos] == -1) {
-                return ERR;
-            }
-            return BIG;
+        return BIG;
+    } else {
+        if (jumps[1][newPos] == -1) {
+            return ERR;
         }
-        else {
-            if (jumps[1][newPos] == -1) {
-                return ERR;
-            }
-            return SMALL;
-        }
+        return SMALL;
     }
 }
